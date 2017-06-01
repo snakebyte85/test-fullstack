@@ -1,0 +1,33 @@
+description = "Backend Spring Boot"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+configurations {
+ archive
+}
+
+apply plugin: "java"
+apply plugin: "org.springframework.boot"
+
+repositories {
+	     mavenCentral()
+}
+
+dependencies {
+	         compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+		 compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+		 archive project(path: ':frontend', configuration: 'zip')
+}
+
+task installStatic(type: Copy, dependsOn: configurations.archive) {
+     from zipTree(configurations.archive.singleFile)
+     into 'build/resources/main/static'
+}
+processResources.dependsOn installStatic

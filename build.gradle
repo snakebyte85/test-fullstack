@@ -1,0 +1,3 @@
+description = "Test full stack, con frontend Angular 4, backend Spring boot e persistence MongoDB"
+version = "0.1"
+
