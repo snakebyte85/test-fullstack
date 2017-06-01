@@ -1,0 +1,18 @@
+spring:
+  profiles.active: dev
+  mvc.favicon.enabled: false
+
+logging:
+    level:
+        it.euris.fullstack: DEBUG
+        org.springframework: DEBUG
+
+---
+spring:
+  profiles: dev
+mongo.db.name: test
+
+---
+spring:
+  profiles: prod
+  
