@@ -1,0 +1,17 @@
+spring:
+  profiles.active: prod
+
+logging:
+    level:
+        it.euris.fullstack: DEBUG
+        org.springframework: INFO
+
+---
+spring:
+  profiles: prod
+
+  data.mongodb:
+    host: mongodb
+    port: 27017
+    database: persons
+

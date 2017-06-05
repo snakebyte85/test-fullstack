@@ -1,0 +1,36 @@
+description = "Docker project"
+
+apply plugin: "base"
+
+configurations {
+   app
+}
+
+dependencies {
+   app project(path: ':backend', transitive: false)
+}
+
+task copyDeps(type: Copy, dependsOn: ':backend:assemble') {
+     from configurations.app
+     into 'backend/dist'
+}
+
+task stopDocker(type: Exec) {
+     commandLine 'docker-compose', 'down', '-v'
+     workingDir '.'
+}
+
+task startDocker(type: Exec, dependsOn: copyDeps) {
+     commandLine 'docker-compose', 'up', '-d', '--build'
+     workingDir '.'
+}
+
+startDocker.shouldRunAfter stopDocker
+
+task docker(dependsOn: ['startDocker','stopDocker']) { }
+
+clean.doFirst {
+	      delete "backend/dist"
+}
+clean.dependsOn stopDocker
+

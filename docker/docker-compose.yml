@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:${MONGODB_VERSION}
+    ports:
+      - "27017:27017"
+
+  mongofiller:
+    image: mongo:${MONGODB_VERSION}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    volumes:
+      - ./example-data:/example-data
+    command:
+      'bash -c "mongoimport --host mongodb --type json --file /example-data/persons.json --jsonArray  -d persons -c person"'
+
+  test-fullstack:
+    build: backend
+    image: test-fullstack:latest
+    links:
+      - mongodb
+    ports:
+      - "8080:8080"
+      

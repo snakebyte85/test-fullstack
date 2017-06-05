@@ -23,29 +23,29 @@ public class PersonRestController {
     
     private final static Logger log = LoggerFactory.getLogger(PersonRestController.class);
 
-
     @Autowired
     private PersonRepository repository;
     
-    @RequestMapping(path="/person/", method=RequestMethod.GET)
-    @ResponseBody
-    public Page<Person> persons() {
-	log.debug("Called 'persons' api");
-	return repository.findAll(new PageRequest(0, 1000));
-    }
     
     @RequestMapping(path="/person", method=RequestMethod.GET)
     @ResponseBody
-    public Page<Person> personsSearch(@RequestParam(value="name", required=false) String name, @RequestParam(value="surname", required=false) String surname) {
-	log.debug("Called 'persons' api searching with name={} and surname={}", name, surname);
-	if(name != null) {
-	    return repository.findByName(name, new PageRequest(0,1000));
-	}
-	if(surname!=null) {
-	    return repository.findBySurname(surname, new PageRequest(0,1000));
-	}
-	
-	return null;
+    public Page<Person> persons() {
+	log.info("Called 'persons' api");
+	return repository.findAll(new PageRequest(0, 10));
+    }
+    
+    @RequestMapping(path="/person", params= "name", method=RequestMethod.GET)
+    @ResponseBody
+    public Page<Person> personsFindByName(@RequestParam(value="name", required=true) String name) {
+	log.debug("Called 'personsFindByName' api with name={}" , name);
+	return repository.findByName(name, new PageRequest(0,1000));	
+    }
+    
+    @RequestMapping(path="/person", params= "surname", method=RequestMethod.GET)
+    @ResponseBody
+    public Page<Person> personsFindBySurname(@RequestParam(value="surname", required=false) String surname) {
+	log.debug("Called 'persons' api searching with surname={}", surname);
+	return repository.findBySurname(surname, new PageRequest(0,1000));	
     }
         
     @RequestMapping(path="/person/{id}", method=RequestMethod.GET)

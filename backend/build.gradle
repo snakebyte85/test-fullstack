@@ -34,3 +34,5 @@ task installStatic(type: Copy, dependsOn: configurations.archive) {
      into 'build/resources/main/static'
 }
 processResources.dependsOn installStatic
+
+
